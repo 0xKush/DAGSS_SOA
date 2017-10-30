@@ -392,7 +392,7 @@
 						<h3>Implementación servicio web</h3>
 					</section>
 					<section>
-						<h5>1. Crear una interfaz</h5>
+						<h5>1. Crear la Interfaz del Servicio(SEI)</h5>
 						<pre>
 <code class="java"  data-trim contenteditable>
 @WebService
@@ -408,8 +408,8 @@ public interface ServiceInterface {
 						</pre>
 						
 					</section>
-						<section>
-						<h5>2. Crear un servicio que implemente la interfaz</h5>
+					<section>
+						<h5>2. Crear una Implementación del Servicio (SIB)</h5>
 						<pre>
 <code class="java"  data-trim contenteditable>
 @WebService(endpointInterface = "ejemploServicio.ServiceInterface")
@@ -419,16 +419,66 @@ public class DeathService implements ServiceInterface {
 public String getResponse(String nombre) {
 	Random r = new Random();
 	
-return "Morirás en " + (2017 + r.nextInt(50)) +
-	".\nCausa de la muerte: " + causasMuerte[r.nextInt(5)] + "\n";
+	return "Morirás en " + (2017 + r.nextInt(50)) +
+			"Causa de la muerte: "
+		 	+ causasMuerte[r.nextInt(5)] + "⨀_⨀";
 }
 
 </code> 
 						</pre>
 						
 					</section>
+					<section>
+						<h5>3. Publicación del Servicio</h5>
+						<pre>
+<code class="java"  data-trim contenteditable>
+public class ServicioPublisher {
+	
+	public static void main(String[] args) {
+		
+		Endpoint.publish(
+				"http://localhost:8080/getDeath",
+				new DeathService()
+		);
+	}
+}
+
+</code> 
+						</pre>
+						
+					</section>
+					<section>
+						<h5>4. Cliente del Servicio</h5>
+						<pre id="bigger">
+<code class="java"  data-trim contenteditable>
+public class TestClient {
+
+	public static void main(String[] args) throws MalformedURLException {
+
+		// Servicio Cálculo de Muerte
+		URL deathUrl = new URL("http://localhost:8080/getDeath?wsdl");
+		// Hacemos referencia al servicio
+		QName name = new QName("http://ejemploServicio/",
+					"DeathServiceService");
+
+		// Creamos cliente del servicio con acceso a los puertos remotos
+		Service deathService = Service.create(deathUrl, name);
+
+		ServiceInterface deathServiceInterface = 
+					deathService.getPort(ServiceInterface.class);
+
+		// Llamamos al servicio
+		System.out.println(deathServiceInterface.getResponse("Pepito"));
+	}
+}
+
+
+</code> 
+						</pre>
+						
+					</section>
 				</section>
-				<!-- 10. fin -->
+				<!-- 12. fin -->
 				<section>
 					<h3 style="color: white">¿Alguna pregunta?</h3>
 					<img width="1440" height="600" style="background: none" class="plain" src="img/last_page.gif" >
