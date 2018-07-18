@@ -1,2 +1,4 @@
 # DAGSS_SOA
-Just some diapos for a Computer Science Subject
+Just some slides for a Computer Science Subject.
+
+![Cover](img/app-overview1.png?raw=true)
